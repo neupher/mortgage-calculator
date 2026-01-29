@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mortgage Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .calculator-wrapper {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 900px) {
+            .calculator-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-panel {
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .mortgage-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .mortgage-tab {
+            flex: 1;
+            padding: 5px 10px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .mortgage-tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .mortgage-tab.tab-a.active {
+            background: #667eea;
+            border-color: #667eea;
+        }
+
+        .mortgage-tab.tab-b.active {
+            background: #e91e63;
+            border-color: #e91e63;
+            color: white;
+        }
+
+        .mortgage-tab.tab-b {
+            border-color: #e91e63;
+            color: #e91e63;
+        }
+
+        .input-group {
+            margin-bottom: 8px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 3px;
+            font-size: 0.75rem;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .input-row input[type="number"] {
+            flex: 1;
+            padding: 5px 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            transition: border-color 0.3s;
+            min-width: 0;
+        }
+
+        .input-row input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .input-row .unit {
+            background: #f5f5f5;
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-weight: 600;
+            color: #666;
+            min-width: 35px;
+            text-align: center;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .slider-container {
+            margin-top: 5px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: linear-gradient(to right, #667eea 0%, #667eea 50%, #e0e0e0 50%, #e0e0e0 100%);
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #667eea;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+            transition: transform 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            background: #667eea;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+        }
+
+        .down-payment-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .down-payment-row input[type="number"] {
+            flex: 2;
+            padding: 5px 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            min-width: 0;
+        }
+
+        .down-payment-row .percent-input {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            min-width: 70px;
+        }
+
+        .down-payment-row .percent-input input {
+            width: 100%;
+            padding: 5px 4px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            min-width: 45px;
+        }
+
+        .date-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .date-row select {
+            flex: 1;
+            padding: 5px 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            background: white;
+            cursor: pointer;
+        }
+
+        .date-row select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .results-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .summary-cards {
+            display: flex;
+            gap: 15px;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            flex: 1;
+        }
+
+        .summary-card.card-a {
+            border-top: 4px solid #667eea;
+        }
+
+        .summary-card.card-b {
+            border-top: 4px solid #e91e63;
+        }
+
+        .summary-card .card-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .summary-card.card-a .card-label {
+            color: #667eea;
+        }
+
+        .summary-card.card-b .card-label {
+            color: #e91e63;
+        }
+
+        .monthly-payment {
+            text-align: center;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .card-b .monthly-payment {
+            background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+        }
+
+        .monthly-payment .label {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.75rem;
+            margin-bottom: 2px;
+        }
+
+        .monthly-payment .amount {
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .payment-breakdown {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+
+        .breakdown-item {
+            background: #f8f9fa;
+            padding: 6px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .breakdown-item .label {
+            font-size: 0.6rem;
+            color: #666;
+            margin-bottom: 2px;
+        }
+
+        .breakdown-item .value {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .breakdown-item.principal .value { color: #4CAF50; }
+        .breakdown-item.interest .value { color: #f44336; }
+        .breakdown-item.total-interest .value { color: #ff9800; }
+        .breakdown-item.total-payment .value { color: #2196F3; }
+
+        .chart-card {
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .chart-card h3 {
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 0.8rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 180px;
+        }
+
+        .left-column-chart .chart-container {
+            height: 160px;
+        }
+
+        .schedule-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .schedule-card h3 {
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .schedule-table-container {
+            max-height: 350px;
+            overflow-y: auto;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        .schedule-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 6px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 0.75rem;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .schedule-table th:first-child {
+            text-align: center;
+        }
+
+        .schedule-table th.col-a {
+            background: #667eea;
+        }
+
+        .schedule-table th.col-b {
+            background: #e91e63;
+        }
+
+        .schedule-table th.col-diff {
+            background: #ff9800;
+            padding: 4px;
+        }
+
+        .diff-select {
+            background: #ff9800;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 4px;
+            padding: 4px 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .diff-select option {
+            background: white;
+            color: #333;
+        }
+
+        .schedule-table td {
+            padding: 6px;
+            text-align: right;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.75rem;
+        }
+
+        .schedule-table td:first-child {
+            text-align: center;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .schedule-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .schedule-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .schedule-table .interest-cell {
+            color: #f44336;
+        }
+
+        .schedule-table .principal-cell {
+            color: #4CAF50;
+        }
+
+        .schedule-table .balance-cell {
+            color: #2196F3;
+        }
+
+        .schedule-table .diff-cell {
+            color: #ff9800;
+            font-weight: 600;
+            background: #fff8e1;
+        }
+
+        .schedule-table .diff-cell.positive {
+            color: #4CAF50;
+            background: #e8f5e9;
+        }
+
+        .schedule-table .diff-cell.negative {
+            color: #f44336;
+            background: #ffebee;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .toggle-btn {
+            padding: 6px 14px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .toggle-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .loan-amount-display {
+            background: #e8f0fe;
+            padding: 4px 8px;
+            border-radius: 5px;
+            margin-top: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .loan-amount-display .label {
+            color: #666;
+            font-size: 0.7rem;
+        }
+
+        .loan-amount-display .value {
+            color: #667eea;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .tab-b-active .loan-amount-display {
+            background: #fce4ec;
+        }
+
+        .tab-b-active .loan-amount-display .value {
+            color: #e91e63;
+        }
+
+        .mortgage-config {
+            display: none;
+        }
+
+        .mortgage-config.active {
+            display: block;
+        }
+
+        /* Hide number input spinners for cleaner look */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .investment-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin-top: 15px;
+        }
+
+        .investment-card h3 {
+            margin-bottom: 12px;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .investment-input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .investment-input-row label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.8rem;
+        }
+
+        .investment-input-row input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            max-width: 150px;
+        }
+
+        .investment-input-row input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .investment-input-row .unit {
+            background: #e8f5e9;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #4CAF50;
+        }
+
+        .investment-table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .investment-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+        }
+
+        .investment-table th {
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white;
+            padding: 8px 6px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 0.7rem;
+            position: sticky;
+            top: 0;
+        }
+
+        .investment-table th:first-child {
+            text-align: center;
+        }
+
+        .investment-table td {
+            padding: 6px;
+            text-align: right;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.75rem;
+        }
+
+        .investment-table td:first-child {
+            text-align: center;
+            font-weight: 600;
+            color: #4CAF50;
+        }
+
+        .investment-table tr:hover {
+            background: #f1f8e9;
+        }
+
+        .investment-table .gain-cell {
+            color: #4CAF50;
+            font-weight: 500;
+        }
+
+        .investment-table .total-cell {
+            color: #2E7D32;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏠 Mortgage Calculator</h1>
+
+        <div class="calculator-wrapper">
+            <div class="input-panel" id="inputPanel">
+                <div class="mortgage-tabs">
+                    <button class="mortgage-tab tab-a active" id="tabA">Mortgage A</button>
+                    <button class="mortgage-tab tab-b" id="tabB">Mortgage B</button>
+                </div>
+
+                <!-- Mortgage A Config -->
+                <div class="mortgage-config active" id="configA">
+                    <div class="input-group">
+                        <label>Home Price</label>
+                        <div class="input-row">
+                            <span class="unit">$</span>
+                            <input type="number" id="homePriceA" value="400000" min="50000" max="5000000" step="1000">
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="homePriceSliderA" min="50000" max="2000000" value="400000" step="5000">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Down Payment</label>
+                        <div class="down-payment-row">
+                            <span class="unit">$</span>
+                            <input type="number" id="downPaymentA" value="80000" min="0" step="1000">
+                            <div class="percent-input">
+                                <input type="number" id="downPaymentPercentA" value="20" min="0" max="100" step="0.5">
+                                <span class="unit">%</span>
+                            </div>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="downPaymentSliderA" min="0" max="100" value="20" step="1">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Loan Term</label>
+                        <div class="input-row">
+                            <input type="number" id="loanTermA" value="30" min="1" max="40">
+                            <span class="unit">Years</span>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="loanTermSliderA" min="1" max="40" value="30" step="1">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Interest Rate</label>
+                        <div class="input-row">
+                            <input type="number" id="interestRateA" value="6.5" min="0.1" max="20" step="0.01">
+                            <span class="unit">%</span>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="interestRateSliderA" min="0.5" max="15" value="6.5" step="0.1">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Start Date</label>
+                        <div class="date-row">
+                            <select id="startMonthA"></select>
+                            <select id="startYearA"></select>
+                        </div>
+                    </div>
+
+                    <div class="loan-amount-display">
+                        <span class="label">Loan Amount:</span>
+                        <span class="value" id="loanAmountDisplayA">$320,000</span>
+                    </div>
+                </div>
+
+                <!-- Mortgage B Config -->
+                <div class="mortgage-config" id="configB">
+                    <div class="input-group">
+                        <label>Home Price</label>
+                        <div class="input-row">
+                            <span class="unit">$</span>
+                            <input type="number" id="homePriceB" value="400000" min="50000" max="5000000" step="1000">
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="homePriceSliderB" min="50000" max="2000000" value="400000" step="5000">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Down Payment</label>
+                        <div class="down-payment-row">
+                            <span class="unit">$</span>
+                            <input type="number" id="downPaymentB" value="80000" min="0" step="1000">
+                            <div class="percent-input">
+                                <input type="number" id="downPaymentPercentB" value="20" min="0" max="100" step="0.5">
+                                <span class="unit">%</span>
+                            </div>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="downPaymentSliderB" min="0" max="100" value="20" step="1">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Loan Term</label>
+                        <div class="input-row">
+                            <input type="number" id="loanTermB" value="15" min="1" max="40">
+                            <span class="unit">Years</span>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="loanTermSliderB" min="1" max="40" value="15" step="1">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Interest Rate</label>
+                        <div class="input-row">
+                            <input type="number" id="interestRateB" value="6.0" min="0.1" max="20" step="0.01">
+                            <span class="unit">%</span>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="interestRateSliderB" min="0.5" max="15" value="6.0" step="0.1">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Start Date</label>
+                        <div class="date-row">
+                            <select id="startMonthB"></select>
+                            <select id="startYearB"></select>
+                        </div>
+                    </div>
+
+                    <div class="loan-amount-display">
+                        <span class="label">Loan Amount:</span>
+                        <span class="value" id="loanAmountDisplayB">$320,000</span>
+                    </div>
+                </div>
+
+                <div class="chart-card left-column-chart">
+                    <h3>📊 Balance Comparison</h3>
+                    <div class="chart-container">
+                        <canvas id="paymentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-panel">
+                <div class="summary-cards">
+                    <div class="summary-card card-a">
+                        <div class="card-label">Mortgage A</div>
+                        <div class="monthly-payment">
+                            <div class="label">Monthly Payment</div>
+                            <div class="amount" id="monthlyPaymentA">$2,022</div>
+                        </div>
+                        <div class="payment-breakdown">
+                            <div class="breakdown-item principal">
+                                <div class="label">Principal</div>
+                                <div class="value" id="principalAmountA">$320,000</div>
+                            </div>
+                            <div class="breakdown-item interest">
+                                <div class="label">Total Interest</div>
+                                <div class="value" id="totalInterestA">$407,920</div>
+                            </div>
+                            <div class="breakdown-item total-interest">
+                                <div class="label">Int/Prin Ratio</div>
+                                <div class="value" id="interestRatioA">127%</div>
+                            </div>
+                            <div class="breakdown-item total-payment">
+                                <div class="label">Total Paid</div>
+                                <div class="value" id="totalPaymentA">$727,920</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="summary-card card-b">
+                        <div class="card-label">Mortgage B</div>
+                        <div class="monthly-payment">
+                            <div class="label">Monthly Payment</div>
+                            <div class="amount" id="monthlyPaymentB">$2,699</div>
+                        </div>
+                        <div class="payment-breakdown">
+                            <div class="breakdown-item principal">
+                                <div class="label">Principal</div>
+                                <div class="value" id="principalAmountB">$320,000</div>
+                            </div>
+                            <div class="breakdown-item interest">
+                                <div class="label">Total Interest</div>
+                                <div class="value" id="totalInterestB">$165,820</div>
+                            </div>
+                            <div class="breakdown-item total-interest">
+                                <div class="label">Int/Prin Ratio</div>
+                                <div class="value" id="interestRatioB">52%</div>
+                            </div>
+                            <div class="breakdown-item total-payment">
+                                <div class="label">Total Paid</div>
+                                <div class="value" id="totalPaymentB">$485,820</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="schedule-card">
+                    <h3>📅 Amortization Schedule Comparison</h3>
+                    <div class="toggle-buttons">
+                        <button class="toggle-btn active" id="annualBtn">Annual</button>
+                        <button class="toggle-btn" id="monthlyBtn">Monthly</button>
+                    </div>
+                    <div class="schedule-table-container">
+                        <table class="schedule-table" id="scheduleTable">
+                            <thead>
+                                <tr>
+                                    <th>Year</th>
+                                    <th class="col-a">A Interest</th>
+                                    <th class="col-a">A Principal</th>
+                                    <th class="col-a">A Prin. Cum.</th>
+                                    <th class="col-a">A Balance</th>
+                                    <th class="col-b">B Interest</th>
+                                    <th class="col-b">B Principal</th>
+                                    <th class="col-b">B Prin. Cum.</th>
+                                    <th class="col-b">B Balance</th>
+                                    <th class="col-diff">
+                                        <select class="diff-select" id="diffTypeSelect">
+                                            <option value="balance">Balance Diff</option>
+                                            <option value="interest">Interest Diff</option>
+                                            <option value="principal">Principal Diff</option>
+                                            <option value="principalCumulative">Prin. Cum. Diff</option>
+                                        </select>
+                                    </th>
+                                    <th class="col-diff">Pmt Diff Cum.</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scheduleBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="investment-card">
+                    <h3>💰 Investment Growth Calculator (Monthly Payment Savings Invested)</h3>
+                    <div class="investment-input-row">
+                        <label>Monthly savings:</label>
+                        <span class="unit">$</span>
+                        <input type="number" id="investmentAmount" value="0" min="0" step="1" readonly style="background:#f5f5f5;">
+                        <label id="savingsLabel">(auto-calculated from payment difference)</label>
+                    </div>
+                    <div class="investment-table-container">
+                        <table class="investment-table" id="investmentTable">
+                            <thead>
+                                <tr>
+                                    <th>Year</th>
+                                    <th>0%</th>
+                                    <th>2%</th>
+                                    <th>4%</th>
+                                    <th>6%</th>
+                                    <th>8%</th>
+                                    <th>10%</th>
+                                    <th>12%</th>
+                                    <th>14%</th>
+                                    <th>16%</th>
+                                </tr>
+                            </thead>
+                            <tbody id="investmentBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize date dropdowns for both configs
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
+
+        ['A', 'B'].forEach(suffix => {
+            const monthSelect = document.getElementById('startMonth' + suffix);
+            const yearSelect = document.getElementById('startYear' + suffix);
+
+            months.forEach((month, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = month;
+                if (index === currentMonth) option.selected = true;
+                monthSelect.appendChild(option);
+            });
+
+            for (let year = currentYear; year <= currentYear + 10; year++) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                if (year === currentYear) option.selected = true;
+                yearSelect.appendChild(option);
+            }
+        });
+
+        // Tab switching
+        const tabA = document.getElementById('tabA');
+        const tabB = document.getElementById('tabB');
+        const configA = document.getElementById('configA');
+        const configB = document.getElementById('configB');
+        const inputPanel = document.getElementById('inputPanel');
+
+        tabA.addEventListener('click', () => {
+            tabA.classList.add('active');
+            tabB.classList.remove('active');
+            configA.classList.add('active');
+            configB.classList.remove('active');
+            inputPanel.classList.remove('tab-b-active');
+        });
+
+        tabB.addEventListener('click', () => {
+            tabB.classList.add('active');
+            tabA.classList.remove('active');
+            configB.classList.add('active');
+            configA.classList.remove('active');
+            inputPanel.classList.add('tab-b-active');
+        });
+
+        let showMonthly = false;
+        let chart = null;
+        let diffType = 'balance'; // 'balance', 'interest', 'principal'
+
+        // Diff type selector
+        document.getElementById('diffTypeSelect').addEventListener('change', (e) => {
+            diffType = e.target.value;
+            calculateAll();
+        });
+
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        function formatCurrencyPrecise(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount);
+        }
+
+        // Update slider background
+        function updateSliderBackground(slider) {
+            const min = parseFloat(slider.min);
+            const max = parseFloat(slider.max);
+            const value = parseFloat(slider.value);
+            const percentage = ((value - min) / (max - min)) * 100;
+            slider.style.background = `linear-gradient(to right, #667eea 0%, #667eea ${percentage}%, #e0e0e0 ${percentage}%, #e0e0e0 100%)`;
+        }
+
+        // Calculate mortgage for a given config
+        function calculateMortgageConfig(suffix) {
+            const price = parseFloat(document.getElementById('homePrice' + suffix).value) || 0;
+            const down = parseFloat(document.getElementById('downPayment' + suffix).value) || 0;
+            const years = parseInt(document.getElementById('loanTerm' + suffix).value) || 30;
+            const rate = parseFloat(document.getElementById('interestRate' + suffix).value) || 0;
+
+            const principal = price - down;
+            const monthlyRate = rate / 100 / 12;
+            const numPayments = years * 12;
+
+            let monthlyPaymentAmount = 0;
+            if (monthlyRate > 0) {
+                monthlyPaymentAmount = principal * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+            } else {
+                monthlyPaymentAmount = principal / numPayments;
+            }
+
+            const totalPayment = monthlyPaymentAmount * numPayments;
+            const totalInterest = totalPayment - principal;
+            const interestRatioValue = principal > 0 ? (totalInterest / principal) * 100 : 0;
+
+            // Update display
+            document.getElementById('loanAmountDisplay' + suffix).textContent = formatCurrency(principal);
+            document.getElementById('monthlyPayment' + suffix).textContent = formatCurrency(monthlyPaymentAmount);
+            document.getElementById('principalAmount' + suffix).textContent = formatCurrency(principal);
+            document.getElementById('totalInterest' + suffix).textContent = formatCurrency(totalInterest);
+            document.getElementById('interestRatio' + suffix).textContent = interestRatioValue.toFixed(1) + '%';
+            document.getElementById('totalPayment' + suffix).textContent = formatCurrency(totalPayment);
+
+            return {
+                principal,
+                monthlyRate,
+                monthlyPayment: monthlyPaymentAmount,
+                numPayments,
+                years,
+                startMonth: parseInt(document.getElementById('startMonth' + suffix).value),
+                startYear: parseInt(document.getElementById('startYear' + suffix).value)
+            };
+        }
+
+        // Generate amortization data
+        function generateAmortizationData(config) {
+            const data = [];
+            let balance = config.principal;
+            let cumulativePrincipal = 0;
+
+            if (showMonthly) {
+                for (let month = 1; month <= config.numPayments && balance > 0.01; month++) {
+                    const interestPayment = balance * config.monthlyRate;
+                    let principalPayment = config.monthlyPayment - interestPayment;
+                    if (principalPayment > balance) principalPayment = balance;
+                    balance -= principalPayment;
+                    if (balance < 0) balance = 0;
+                    cumulativePrincipal += principalPayment;
+
+                    const paymentMonth = (config.startMonth + month - 1) % 12;
+                    const paymentYear = config.startYear + Math.floor((config.startMonth + month - 1) / 12);
+
+                    data.push({
+                        period: `${months[paymentMonth]} ${paymentYear}`,
+                        interest: interestPayment,
+                        principal: principalPayment,
+                        principalCumulative: cumulativePrincipal,
+                        balance: balance
+                    });
+                }
+            } else {
+                for (let year = 1; year <= config.years && balance > 0.01; year++) {
+                    let yearInterest = 0;
+                    let yearPrincipal = 0;
+
+                    for (let month = 1; month <= 12 && balance > 0.01; month++) {
+                        const interestPayment = balance * config.monthlyRate;
+                        let principalPayment = config.monthlyPayment - interestPayment;
+                        if (principalPayment > balance) principalPayment = balance;
+                        yearInterest += interestPayment;
+                        yearPrincipal += principalPayment;
+                        balance -= principalPayment;
+                        if (balance < 0) balance = 0;
+                    }
+                    cumulativePrincipal += yearPrincipal;
+
+                    data.push({
+                        period: config.startYear + year - 1,
+                        interest: yearInterest,
+                        principal: yearPrincipal,
+                        principalCumulative: cumulativePrincipal,
+                        balance: balance
+                    });
+                }
+            }
+
+            return data;
+        }
+
+        // Generate combined schedule
+        function generateSchedule(configA, configB) {
+            const tbody = document.getElementById('scheduleBody');
+            const thead = document.querySelector('#scheduleTable thead tr');
+            tbody.innerHTML = '';
+
+            const dataA = generateAmortizationData(configA);
+            const dataB = generateAmortizationData(configB);
+
+            const periodLabel = showMonthly ? 'Date' : 'Year';
+            const diffSelect = document.getElementById('diffTypeSelect');
+            const currentDiffType = diffSelect.value;
+            
+            thead.innerHTML = `
+                <th>${periodLabel}</th>
+                <th class="col-a">A Interest</th>
+                <th class="col-a">A Principal</th>
+                <th class="col-a">A Prin. Cum.</th>
+                <th class="col-a">A Balance</th>
+                <th class="col-b">B Interest</th>
+                <th class="col-b">B Principal</th>
+                <th class="col-b">B Prin. Cum.</th>
+                <th class="col-b">B Balance</th>
+                <th class="col-diff">
+                    <select class="diff-select" id="diffTypeSelect">
+                        <option value="balance" ${currentDiffType === 'balance' ? 'selected' : ''}>Balance Diff</option>
+                        <option value="interest" ${currentDiffType === 'interest' ? 'selected' : ''}>Interest Diff</option>
+                        <option value="principal" ${currentDiffType === 'principal' ? 'selected' : ''}>Principal Diff</option>
+                        <option value="principalCumulative" ${currentDiffType === 'principalCumulative' ? 'selected' : ''}>Prin. Cum. Diff</option>
+                    </select>
+                </th>
+                <th class="col-diff">Pmt Diff Cum.</th>
+            `;
+
+            // Re-attach event listener after rebuilding header
+            document.getElementById('diffTypeSelect').addEventListener('change', (e) => {
+                diffType = e.target.value;
+                calculateAll();
+            });
+
+            const maxLength = Math.max(dataA.length, dataB.length);
+            let cumulativePaymentDiff = 0;
+
+            for (let i = 0; i < maxLength; i++) {
+                const rowA = dataA[i] || { interest: 0, principal: 0, principalCumulative: 0, balance: 0 };
+                const rowB = dataB[i] || { interest: 0, principal: 0, principalCumulative: 0, balance: 0 };
+                const period = dataA[i]?.period || dataB[i]?.period || '';
+
+                // Calculate period payment difference (A payment - B payment)
+                let periodPaymentA = 0;
+                let periodPaymentB = 0;
+                
+                if (showMonthly) {
+                    // Monthly view: use monthly payment amounts
+                    periodPaymentA = dataA[i] ? configA.monthlyPayment : 0;
+                    periodPaymentB = dataB[i] ? configB.monthlyPayment : 0;
+                    // If loan is paid off, payment is 0
+                    if (dataA[i] && rowA.balance <= 0.01 && i > 0 && dataA[i-1]?.balance > 0.01) {
+                        periodPaymentA = rowA.interest + rowA.principal;
+                    } else if (!dataA[i] || (i > 0 && dataA[i-1]?.balance <= 0.01)) {
+                        periodPaymentA = 0;
+                    }
+                    if (dataB[i] && rowB.balance <= 0.01 && i > 0 && dataB[i-1]?.balance > 0.01) {
+                        periodPaymentB = rowB.interest + rowB.principal;
+                    } else if (!dataB[i] || (i > 0 && dataB[i-1]?.balance <= 0.01)) {
+                        periodPaymentB = 0;
+                    }
+                } else {
+                    // Annual view: use sum of interest + principal for the year
+                    periodPaymentA = dataA[i] ? (rowA.interest + rowA.principal) : 0;
+                    periodPaymentB = dataB[i] ? (rowB.interest + rowB.principal) : 0;
+                }
+                
+                cumulativePaymentDiff += (periodPaymentA - periodPaymentB);
+
+                let diffValue;
+                switch(diffType) {
+                    case 'interest':
+                        diffValue = rowA.interest - rowB.interest;
+                        break;
+                    case 'principal':
+                        diffValue = rowA.principal - rowB.principal;
+                        break;
+                    case 'principalCumulative':
+                        diffValue = rowA.principalCumulative - rowB.principalCumulative;
+                        break;
+                    default:
+                        diffValue = rowA.balance - rowB.balance;
+                }
+                const diffClass = diffValue > 0 ? 'negative' : diffValue < 0 ? 'positive' : '';
+                const cumPmtDiffClass = cumulativePaymentDiff > 0 ? 'negative' : cumulativePaymentDiff < 0 ? 'positive' : '';
+
+                const formatFn = showMonthly ? formatCurrencyPrecise : formatCurrency;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${period}</td>
+                    <td class="interest-cell">${dataA[i] ? formatFn(rowA.interest) : '-'}</td>
+                    <td class="principal-cell">${dataA[i] ? formatFn(rowA.principal) : '-'}</td>
+                    <td class="principal-cell">${dataA[i] ? formatCurrency(rowA.principalCumulative) : '-'}</td>
+                    <td class="balance-cell">${dataA[i] ? formatCurrency(rowA.balance) : '-'}</td>
+                    <td class="interest-cell">${dataB[i] ? formatFn(rowB.interest) : '-'}</td>
+                    <td class="principal-cell">${dataB[i] ? formatFn(rowB.principal) : '-'}</td>
+                    <td class="principal-cell">${dataB[i] ? formatCurrency(rowB.principalCumulative) : '-'}</td>
+                    <td class="balance-cell">${dataB[i] ? formatCurrency(rowB.balance) : '-'}</td>
+                    <td class="diff-cell ${diffClass}">${formatCurrency(diffValue)}</td>
+                    <td class="diff-cell ${cumPmtDiffClass}">${formatCurrency(cumulativePaymentDiff)}</td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+
+        function updateChart(configA, configB) {
+            const dataA = generateAmortizationData({ ...configA });
+            const dataB = generateAmortizationData({ ...configB });
+
+            // Reset for chart (always annual for readability)
+            const chartDataA = [];
+            const chartDataB = [];
+            const labels = [];
+
+            let balanceA = configA.principal;
+            let balanceB = configB.principal;
+
+            const maxYears = Math.max(configA.years, configB.years);
+
+            for (let year = 0; year <= maxYears; year++) {
+                labels.push(configA.startYear + year);
+
+                if (year === 0) {
+                    chartDataA.push(configA.principal);
+                    chartDataB.push(configB.principal);
+                } else {
+                    // Calculate year-end balance for A
+                    if (year <= configA.years && balanceA > 0.01) {
+                        for (let month = 1; month <= 12 && balanceA > 0.01; month++) {
+                            const interestPayment = balanceA * configA.monthlyRate;
+                            let principalPayment = configA.monthlyPayment - interestPayment;
+                            if (principalPayment > balanceA) principalPayment = balanceA;
+                            balanceA -= principalPayment;
+                            if (balanceA < 0) balanceA = 0;
+                        }
+                    }
+                    chartDataA.push(balanceA);
+
+                    // Calculate year-end balance for B
+                    if (year <= configB.years && balanceB > 0.01) {
+                        for (let month = 1; month <= 12 && balanceB > 0.01; month++) {
+                            const interestPayment = balanceB * configB.monthlyRate;
+                            let principalPayment = configB.monthlyPayment - interestPayment;
+                            if (principalPayment > balanceB) principalPayment = balanceB;
+                            balanceB -= principalPayment;
+                            if (balanceB < 0) balanceB = 0;
+                        }
+                    }
+                    chartDataB.push(balanceB);
+                }
+            }
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            const ctx = document.getElementById('paymentChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Mortgage A Balance',
+                            data: chartDataA,
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 3,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: 'Mortgage B Balance',
+                            data: chartDataB,
+                            borderColor: '#e91e63',
+                            backgroundColor: 'rgba(233, 30, 99, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 3,
+                            pointHoverRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + formatCurrency(context.raw);
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Year'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Remaining Balance'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return formatCurrency(value);
+                                }
+                            },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Main calculate function
+        function calculateAll() {
+            const configA = calculateMortgageConfig('A');
+            const configB = calculateMortgageConfig('B');
+            generateSchedule(configA, configB);
+            updateChart(configA, configB);
+            generateInvestmentTable(configA, configB);
+        }
+
+        // Setup event listeners for both configs
+        ['A', 'B'].forEach(suffix => {
+            const homePrice = document.getElementById('homePrice' + suffix);
+            const homePriceSlider = document.getElementById('homePriceSlider' + suffix);
+            const downPayment = document.getElementById('downPayment' + suffix);
+            const downPaymentPercent = document.getElementById('downPaymentPercent' + suffix);
+            const downPaymentSlider = document.getElementById('downPaymentSlider' + suffix);
+            const loanTerm = document.getElementById('loanTerm' + suffix);
+            const loanTermSlider = document.getElementById('loanTermSlider' + suffix);
+            const interestRate = document.getElementById('interestRate' + suffix);
+            const interestRateSlider = document.getElementById('interestRateSlider' + suffix);
+            const startMonth = document.getElementById('startMonth' + suffix);
+            const startYear = document.getElementById('startYear' + suffix);
+
+            function updateDownPaymentFromPercent() {
+                const price = parseFloat(homePrice.value) || 0;
+                const percent = parseFloat(downPaymentPercent.value) || 0;
+                downPayment.value = Math.round(price * percent / 100);
+                downPaymentSlider.value = percent;
+                updateSliderBackground(downPaymentSlider);
+            }
+
+            homePrice.addEventListener('input', () => {
+                homePriceSlider.value = homePrice.value;
+                updateSliderBackground(homePriceSlider);
+                updateDownPaymentFromPercent();
+                calculateAll();
+            });
+
+            homePriceSlider.addEventListener('input', () => {
+                homePrice.value = homePriceSlider.value;
+                updateSliderBackground(homePriceSlider);
+                updateDownPaymentFromPercent();
+                calculateAll();
+            });
+
+            downPayment.addEventListener('input', () => {
+                const price = parseFloat(homePrice.value) || 1;
+                const down = parseFloat(downPayment.value) || 0;
+                const percent = (down / price) * 100;
+                downPaymentPercent.value = percent.toFixed(1);
+                downPaymentSlider.value = percent;
+                updateSliderBackground(downPaymentSlider);
+                calculateAll();
+            });
+
+            downPaymentPercent.addEventListener('input', () => {
+                updateDownPaymentFromPercent();
+                calculateAll();
+            });
+
+            downPaymentSlider.addEventListener('input', () => {
+                downPaymentPercent.value = downPaymentSlider.value;
+                updateSliderBackground(downPaymentSlider);
+                updateDownPaymentFromPercent();
+                calculateAll();
+            });
+
+            loanTerm.addEventListener('input', () => {
+                loanTermSlider.value = loanTerm.value;
+                updateSliderBackground(loanTermSlider);
+                calculateAll();
+            });
+
+            loanTermSlider.addEventListener('input', () => {
+                loanTerm.value = loanTermSlider.value;
+                updateSliderBackground(loanTermSlider);
+                calculateAll();
+            });
+
+            interestRate.addEventListener('input', () => {
+                interestRateSlider.value = interestRate.value;
+                updateSliderBackground(interestRateSlider);
+                calculateAll();
+            });
+
+            interestRateSlider.addEventListener('input', () => {
+                interestRate.value = interestRateSlider.value;
+                updateSliderBackground(interestRateSlider);
+                calculateAll();
+            });
+
+            startMonth.addEventListener('change', calculateAll);
+            startYear.addEventListener('change', calculateAll);
+
+            // Initialize slider backgrounds
+            updateSliderBackground(homePriceSlider);
+            updateSliderBackground(downPaymentSlider);
+            updateSliderBackground(loanTermSlider);
+            updateSliderBackground(interestRateSlider);
+        });
+
+        // Toggle buttons
+        const annualBtn = document.getElementById('annualBtn');
+        const monthlyBtn = document.getElementById('monthlyBtn');
+
+        annualBtn.addEventListener('click', () => {
+            showMonthly = false;
+            annualBtn.classList.add('active');
+            monthlyBtn.classList.remove('active');
+            calculateAll();
+        });
+
+        monthlyBtn.addEventListener('click', () => {
+            showMonthly = true;
+            monthlyBtn.classList.add('active');
+            annualBtn.classList.remove('active');
+            calculateAll();
+        });
+
+        // Investment Calculator
+        const investmentAmountInput = document.getElementById('investmentAmount');
+        const rates = [0, 2, 4, 6, 8, 10, 12, 14, 16];
+
+        function generateInvestmentTable(configA, configB) {
+            const tbody = document.getElementById('investmentBody');
+            tbody.innerHTML = '';
+            
+            // Calculate monthly payment difference (use absolute value, invest the savings)
+            const monthlyPaymentA = configA.monthlyPayment || 0;
+            const monthlyPaymentB = configB.monthlyPayment || 0;
+            const monthlySavings = Math.abs(monthlyPaymentA - monthlyPaymentB);
+            
+            // Update the display
+            document.getElementById('investmentAmount').value = Math.round(monthlySavings);
+            
+            // Determine which mortgage has lower payment
+            const cheaperMortgage = monthlyPaymentA < monthlyPaymentB ? 'A' : 'B';
+            document.getElementById('savingsLabel').textContent = 
+                `(${cheaperMortgage} saves $${Math.round(monthlySavings)}/mo vs ${cheaperMortgage === 'A' ? 'B' : 'A'})`;
+            
+            const maxYears = Math.max(configA.years || 30, configB.years || 30);
+            const monthlyRates = rates.map(r => r / 100 / 12); // Convert annual to monthly rate
+
+            // Track cumulative totals for each rate
+            const totals = rates.map(() => 0);
+
+            for (let year = 1; year <= maxYears; year++) {
+                const row = document.createElement('tr');
+                let cells = `<td>${year}</td>`;
+
+                rates.forEach((rate, index) => {
+                    // For each month in this year, add monthly savings and apply monthly interest
+                    for (let month = 0; month < 12; month++) {
+                        // Determine if we're still making payments on each mortgage
+                        const monthNum = (year - 1) * 12 + month + 1;
+                        const stillPayingA = monthNum <= configA.numPayments;
+                        const stillPayingB = monthNum <= configB.numPayments;
+                        
+                        let thisMonthSavings = 0;
+                        if (stillPayingA && stillPayingB) {
+                            // Both still paying - invest the difference
+                            thisMonthSavings = monthlySavings;
+                        } else if (stillPayingA && !stillPayingB) {
+                            // B is paid off, A still paying - if A was cheaper, now no savings; if B was cheaper, now invest full A payment
+                            thisMonthSavings = monthlyPaymentA < monthlyPaymentB ? 0 : monthlyPaymentA;
+                        } else if (!stillPayingA && stillPayingB) {
+                            // A is paid off, B still paying - if B was cheaper, now no savings; if A was cheaper, now invest full B payment
+                            thisMonthSavings = monthlyPaymentB < monthlyPaymentA ? 0 : monthlyPaymentB;
+                        }
+                        // If both paid off, no more savings to invest
+                        
+                        // Add this month's contribution
+                        totals[index] += thisMonthSavings;
+                        // Apply monthly interest
+                        totals[index] *= (1 + monthlyRates[index]);
+                    }
+                    
+                    cells += `<td class="total-cell">${formatCurrency(totals[index])}</td>`;
+                });
+
+                row.innerHTML = cells;
+                tbody.appendChild(row);
+            }
+        }
+
+        investmentAmountInput.addEventListener('input', () => {
+            // No longer needed since it's auto-calculated, but keep for compatibility
+        });
+
+        // Save and load from localStorage
+        function saveToLocalStorage() {
+            const data = {};
+            ['A', 'B'].forEach(suffix => {
+                data['homePrice' + suffix] = document.getElementById('homePrice' + suffix).value;
+                data['downPayment' + suffix] = document.getElementById('downPayment' + suffix).value;
+                data['downPaymentPercent' + suffix] = document.getElementById('downPaymentPercent' + suffix).value;
+                data['loanTerm' + suffix] = document.getElementById('loanTerm' + suffix).value;
+                data['interestRate' + suffix] = document.getElementById('interestRate' + suffix).value;
+                data['startMonth' + suffix] = document.getElementById('startMonth' + suffix).value;
+                data['startYear' + suffix] = document.getElementById('startYear' + suffix).value;
+            });
+            localStorage.setItem('mortgageCalculatorData', JSON.stringify(data));
+        }
+
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('mortgageCalculatorData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                ['A', 'B'].forEach(suffix => {
+                    if (data['homePrice' + suffix]) {
+                        document.getElementById('homePrice' + suffix).value = data['homePrice' + suffix];
+                        document.getElementById('homePriceSlider' + suffix).value = data['homePrice' + suffix];
+                    }
+                    if (data['downPayment' + suffix]) {
+                        document.getElementById('downPayment' + suffix).value = data['downPayment' + suffix];
+                    }
+                    if (data['downPaymentPercent' + suffix]) {
+                        document.getElementById('downPaymentPercent' + suffix).value = data['downPaymentPercent' + suffix];
+                        document.getElementById('downPaymentSlider' + suffix).value = data['downPaymentPercent' + suffix];
+                    }
+                    if (data['loanTerm' + suffix]) {
+                        document.getElementById('loanTerm' + suffix).value = data['loanTerm' + suffix];
+                        document.getElementById('loanTermSlider' + suffix).value = data['loanTerm' + suffix];
+                    }
+                    if (data['interestRate' + suffix]) {
+                        document.getElementById('interestRate' + suffix).value = data['interestRate' + suffix];
+                        document.getElementById('interestRateSlider' + suffix).value = data['interestRate' + suffix];
+                    }
+                    if (data['startMonth' + suffix]) {
+                        document.getElementById('startMonth' + suffix).value = data['startMonth' + suffix];
+                    }
+                    if (data['startYear' + suffix]) {
+                        document.getElementById('startYear' + suffix).value = data['startYear' + suffix];
+                    }
+
+                    // Update slider backgrounds after loading
+                    updateSliderBackground(document.getElementById('homePriceSlider' + suffix));
+                    updateSliderBackground(document.getElementById('downPaymentSlider' + suffix));
+                    updateSliderBackground(document.getElementById('loanTermSlider' + suffix));
+                    updateSliderBackground(document.getElementById('interestRateSlider' + suffix));
+                });
+            }
+        }
+
+        // Wrap calculateAll to also save
+        const originalCalculateAll = calculateAll;
+        calculateAll = function() {
+            originalCalculateAll();
+            saveToLocalStorage();
+        };
+
+        // Initialize - load saved data first, then calculate
+        loadFromLocalStorage();
+        calculateAll();
+    </script>
+</body>
+</html>
