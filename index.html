@@ -551,6 +551,15 @@
             margin-top: 15px;
         }
 
+        .investment-card.lumpsum-card {
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            border: 1px solid #90caf9;
+        }
+
+        .investment-card.lumpsum-card .investment-table thead th {
+            background: linear-gradient(135deg, #1976d2, #7b1fa2);
+        }
+
         .investment-card h3 {
             margin-bottom: 12px;
             color: #333;
@@ -910,6 +919,36 @@
                                 </tr>
                             </thead>
                             <tbody id="investmentBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="investment-card lumpsum-card">
+                    <h3>💵 Lump Sum Investment Growth Calculator</h3>
+                    <div class="investment-input-row">
+                        <label>One-off investment:</label>
+                        <span class="unit">$</span>
+                        <input type="number" id="lumpSumAmount" value="10000" min="0" step="100">
+                        <label>(enter your lump sum amount)</label>
+                    </div>
+                    <div class="investment-table-container">
+                        <table class="investment-table lumpsum-table" id="lumpSumTable">
+                            <thead>
+                                <tr>
+                                    <th>Year</th>
+                                    <th>0%</th>
+                                    <th>2%</th>
+                                    <th>4%</th>
+                                    <th>6%</th>
+                                    <th>8%</th>
+                                    <th>10%</th>
+                                    <th>12%</th>
+                                    <th>14%</th>
+                                    <th>16%</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lumpSumBody">
                             </tbody>
                         </table>
                     </div>
@@ -1346,6 +1385,8 @@
             generateSchedule(configA, configB);
             updateChart(configA, configB);
             generateInvestmentTable(configA, configB);
+            const maxYears = Math.max(configA.termYears, configB.termYears);
+            generateLumpSumTable(maxYears);
         }
 
         // Setup event listeners for both configs
@@ -1519,10 +1560,44 @@
                     cells += `<td class="total-cell">${formatCurrency(totals[index])}</td>`;
                 });
 
+            row.innerHTML = cells;
+                tbody.appendChild(row);
+            }
+        }
+
+        // Lump Sum Investment Calculator
+        const lumpSumAmountInput = document.getElementById('lumpSumAmount');
+
+        function generateLumpSumTable(maxYears) {
+            const tbody = document.getElementById('lumpSumBody');
+            tbody.innerHTML = '';
+            
+            const lumpSum = parseFloat(lumpSumAmountInput.value) || 0;
+            const monthlyRates = rates.map(r => r / 100 / 12);
+
+            for (let year = 1; year <= maxYears; year++) {
+                const row = document.createElement('tr');
+                let cells = `<td>${year}</td>`;
+
+                rates.forEach((rate, index) => {
+                    const months = year * 12;
+                    const futureValue = lumpSum * Math.pow(1 + monthlyRates[index], months);
+                    cells += `<td class="total-cell">${formatCurrency(futureValue)}</td>`;
+                });
+
                 row.innerHTML = cells;
                 tbody.appendChild(row);
             }
         }
+
+        lumpSumAmountInput.addEventListener('input', () => {
+            const maxYears = Math.max(
+                parseInt(document.getElementById('loanTermA').value) || 30,
+                parseInt(document.getElementById('loanTermB').value) || 30
+            );
+            generateLumpSumTable(maxYears);
+            saveToLocalStorage();
+        });
 
         investmentAmountInput.addEventListener('input', () => {
             // No longer needed since it's auto-calculated, but keep for compatibility
@@ -1540,6 +1615,7 @@
                 data['startMonth' + suffix] = document.getElementById('startMonth' + suffix).value;
                 data['startYear' + suffix] = document.getElementById('startYear' + suffix).value;
             });
+            data['lumpSumAmount'] = document.getElementById('lumpSumAmount').value;
             localStorage.setItem('mortgageCalculatorData', JSON.stringify(data));
         }
 
@@ -1580,6 +1656,9 @@
                     updateSliderBackground(document.getElementById('loanTermSlider' + suffix));
                     updateSliderBackground(document.getElementById('interestRateSlider' + suffix));
                 });
+                if (data['lumpSumAmount']) {
+                    document.getElementById('lumpSumAmount').value = data['lumpSumAmount'];
+                }
             }
         }
 
