@@ -6,29 +6,50 @@
 }
 
 :root {
-    --primary-color: #667eea;
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --secondary-color: #e91e63;
-    --secondary-gradient: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
-    --success-color: #4CAF50;
-    --danger-color: #f44336;
-    --warning-color: #ff9800;
-    --info-color: #2196F3;
-    --text-primary: #333;
-    --text-secondary: #666;
-    --background-light: #f8f9fa;
-    --border-color: #e0e0e0;
-    --border-radius: 10px;
-    --border-radius-sm: 6px;
-    --shadow: 0 10px 40px rgba(0,0,0,0.2);
+    /* Dark Theme - Trading App Style */
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #21262d;
+    --bg-card: #1c2128;
+
+    /* Accent Colors */
+    --accent-green: #00d09c;
+    --accent-green-light: #3dffc0;
+    --accent-green-dark: #00a67d;
+    --accent-pink: #ff6b9d;
+    --accent-pink-dark: #d44a7a;
+
+    /* Status Colors */
+    --success-color: #00d09c;
+    --danger-color: #ff6b6b;
+    --warning-color: #ffa726;
+    --info-color: #4fc3f7;
+
+    /* Text Colors */
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+
+    /* Borders & Shadows */
+    --border-color: #30363d;
+    --border-radius: 12px;
+    --border-radius-sm: 8px;
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 20px rgba(0, 208, 156, 0.15);
+
+    /* Gradients */
+    --gradient-green: linear-gradient(135deg, #00d09c 0%, #00a67d 100%);
+    --gradient-pink: linear-gradient(135deg, #ff6b9d 0%, #d44a7a 100%);
+    --gradient-dark: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
 }
 
 /* Body & Container */
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-    background: var(--primary-gradient);
+    background: var(--bg-primary);
     min-height: 100vh;
     padding: 20px;
+    color: var(--text-primary);
 }
 
 .container {
@@ -38,10 +59,10 @@ body {
 
 h1 {
     text-align: center;
-    color: white;
+    color: var(--text-primary);
     margin-bottom: 30px;
     font-size: 2.5rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    text-shadow: 0 0 30px rgba(0, 208, 156, 0.3);
 }
 
 /* Calculator Layout */
@@ -59,10 +80,11 @@ h1 {
 
 /* Input Panel */
 .input-panel {
-    background: white;
+    background: var(--bg-secondary);
     border-radius: var(--border-radius);
     padding: 12px;
     box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
 }
 
 /* Mortgage Tabs */
@@ -75,9 +97,9 @@ h1 {
 .mortgage-tab {
     flex: 1;
     padding: 5px 10px;
-    border: 2px solid var(--primary-color);
-    background: white;
-    color: var(--primary-color);
+    border: 2px solid var(--accent-green);
+    background: transparent;
+    color: var(--accent-green);
     border-radius: var(--border-radius-sm);
     cursor: pointer;
     font-weight: 600;
@@ -87,24 +109,25 @@ h1 {
 }
 
 .mortgage-tab.active {
-    background: var(--primary-color);
-    color: white;
+    background: var(--accent-green);
+    color: var(--bg-primary);
 }
 
 .mortgage-tab.tab-a.active {
-    background: var(--primary-color);
-    border-color: var(--primary-color);
+    background: var(--accent-green);
+    border-color: var(--accent-green);
+    color: var(--bg-primary);
 }
 
 .mortgage-tab.tab-b.active {
-    background: var(--secondary-color);
-    border-color: var(--secondary-color);
-    color: white;
+    background: var(--accent-pink);
+    border-color: var(--accent-pink);
+    color: var(--bg-primary);
 }
 
 .mortgage-tab.tab-b {
-    border-color: var(--secondary-color);
-    color: var(--secondary-color);
+    border-color: var(--accent-pink);
+    color: var(--accent-pink);
 }
 
 /* Input Groups */
@@ -115,9 +138,11 @@ h1 {
 .input-group label {
     display: block;
     font-weight: 600;
-    color: var(--text-primary);
+    color: var(--text-secondary);
     margin-bottom: 3px;
     font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .input-row {
@@ -129,28 +154,32 @@ h1 {
 .input-row input[type="number"] {
     flex: 1;
     padding: 5px 8px;
-    border: 2px solid var(--border-color);
-    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
     font-size: 0.8rem;
-    transition: border-color 0.3s;
+    transition: all 0.3s;
     min-width: 0;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
 }
 
 .input-row input[type="number"]:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-color: var(--accent-green);
+    box-shadow: 0 0 0 2px rgba(0, 208, 156, 0.2);
 }
 
 .input-row .unit {
-    background: #f5f5f5;
+    background: var(--bg-tertiary);
     padding: 5px 8px;
-    border-radius: 5px;
+    border-radius: 6px;
     font-weight: 600;
     color: var(--text-secondary);
     min-width: 35px;
     text-align: center;
     font-size: 0.75rem;
     flex-shrink: 0;
+    border: 1px solid var(--border-color);
 }
 
 /* Slider Container */
@@ -163,7 +192,7 @@ input[type="range"] {
     height: 6px;
     -webkit-appearance: none;
     appearance: none;
-    background: linear-gradient(to right, var(--primary-color) 0%, var(--primary-color) 50%, var(--border-color) 50%, var(--border-color) 100%);
+    background: linear-gradient(to right, var(--accent-green) 0%, var(--accent-green) 50%, var(--bg-tertiary) 50%, var(--bg-tertiary) 100%);
     border-radius: 3px;
     cursor: pointer;
 }
@@ -173,10 +202,10 @@ input[type="range"]::-webkit-slider-thumb {
     appearance: none;
     width: 14px;
     height: 14px;
-    background: var(--primary-color);
+    background: var(--accent-green);
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 0 10px rgba(0, 208, 156, 0.5);
     transition: transform 0.2s;
 }
 
@@ -187,11 +216,11 @@ input[type="range"]::-webkit-slider-thumb:hover {
 input[type="range"]::-moz-range-thumb {
     width: 14px;
     height: 14px;
-    background: var(--primary-color);
+    background: var(--accent-green);
     border-radius: 50%;
     cursor: pointer;
     border: none;
-    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 0 10px rgba(0, 208, 156, 0.5);
 }
 
 /* Down Payment Row */
@@ -203,10 +232,12 @@ input[type="range"]::-moz-range-thumb {
 .down-payment-row input[type="number"] {
     flex: 2;
     padding: 5px 8px;
-    border: 2px solid var(--border-color);
-    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
     font-size: 0.8rem;
     min-width: 0;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
 }
 
 .down-payment-row .percent-input {
@@ -220,10 +251,12 @@ input[type="range"]::-moz-range-thumb {
 .down-payment-row .percent-input input {
     width: 100%;
     padding: 5px 4px;
-    border: 2px solid var(--border-color);
-    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
     font-size: 0.8rem;
     min-width: 45px;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
 }
 
 /* Date Row */
@@ -235,16 +268,17 @@ input[type="range"]::-moz-range-thumb {
 .date-row select {
     flex: 1;
     padding: 5px 8px;
-    border: 2px solid var(--border-color);
-    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
     font-size: 0.8rem;
-    background: white;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
     cursor: pointer;
 }
 
 .date-row select:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-color: var(--accent-green);
 }
 
 /* Results Panel */
@@ -261,19 +295,20 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .summary-card {
-    background: white;
+    background: var(--bg-secondary);
     border-radius: var(--border-radius);
     padding: 12px;
     box-shadow: var(--shadow);
     flex: 1;
+    border: 1px solid var(--border-color);
 }
 
 .summary-card.card-a {
-    border-top: 4px solid var(--primary-color);
+    border-top: 3px solid var(--accent-green);
 }
 
 .summary-card.card-b {
-    border-top: 4px solid var(--secondary-color);
+    border-top: 3px solid var(--accent-pink);
 }
 
 .summary-card .card-label {
@@ -285,34 +320,35 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .summary-card.card-a .card-label {
-    color: var(--primary-color);
+    color: var(--accent-green);
 }
 
 .summary-card.card-b .card-label {
-    color: var(--secondary-color);
+    color: var(--accent-pink);
 }
 
 /* Monthly Payment Display */
 .monthly-payment {
     text-align: center;
     padding: 10px;
-    background: var(--primary-gradient);
+    background: var(--gradient-green);
     border-radius: 8px;
     margin-bottom: 10px;
 }
 
 .card-b .monthly-payment {
-    background: var(--secondary-gradient);
+    background: var(--gradient-pink);
 }
 
 .monthly-payment .label {
-    color: rgba(255,255,255,0.8);
+    color: rgba(0, 0, 0, 0.6);
     font-size: 0.75rem;
     margin-bottom: 2px;
+    font-weight: 500;
 }
 
 .monthly-payment .amount {
-    color: white;
+    color: var(--bg-primary);
     font-size: 1.4rem;
     font-weight: 700;
 }
@@ -325,16 +361,18 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .breakdown-item {
-    background: var(--background-light);
+    background: var(--bg-tertiary);
     padding: 6px;
     border-radius: var(--border-radius-sm);
     text-align: center;
+    border: 1px solid var(--border-color);
 }
 
 .breakdown-item .label {
     font-size: 0.6rem;
-    color: var(--text-secondary);
+    color: var(--text-muted);
     margin-bottom: 2px;
+    text-transform: uppercase;
 }
 
 .breakdown-item .value {
@@ -350,10 +388,11 @@ input[type="range"]::-moz-range-thumb {
 
 /* Chart Card */
 .chart-card {
-    background: white;
+    background: var(--bg-secondary);
     border-radius: var(--border-radius);
     padding: 10px;
     box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
 }
 
 .chart-card h3 {
@@ -373,10 +412,11 @@ input[type="range"]::-moz-range-thumb {
 
 /* Schedule Card */
 .schedule-card {
-    background: white;
-    border-radius: 12px;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
     padding: 15px;
     box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
 }
 
 .schedule-card h3 {
@@ -400,8 +440,8 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .schedule-table th {
-    background: var(--primary-gradient);
-    color: white;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
     padding: 8px 6px;
     text-align: right;
     font-weight: 600;
@@ -409,6 +449,7 @@ input[type="range"]::-moz-range-thumb {
     position: sticky;
     top: 0;
     z-index: 1;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .schedule-table th:first-child {
@@ -416,22 +457,25 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .schedule-table th.col-a {
-    background: var(--primary-color);
+    background: rgba(0, 208, 156, 0.2);
+    color: var(--accent-green);
 }
 
 .schedule-table th.col-b {
-    background: var(--secondary-color);
+    background: rgba(255, 107, 157, 0.2);
+    color: var(--accent-pink);
 }
 
 .schedule-table th.col-diff {
-    background: var(--warning-color);
+    background: rgba(255, 167, 38, 0.2);
+    color: var(--warning-color);
     padding: 4px;
 }
 
 .diff-select {
-    background: var(--warning-color);
-    color: white;
-    border: 1px solid rgba(255,255,255,0.5);
+    background: var(--bg-tertiary);
+    color: var(--warning-color);
+    border: 1px solid var(--warning-color);
     border-radius: 4px;
     padding: 4px 6px;
     font-size: 0.7rem;
@@ -441,25 +485,26 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .diff-select option {
-    background: white;
+    background: var(--bg-secondary);
     color: var(--text-primary);
 }
 
 .schedule-table td {
     padding: 6px;
     text-align: right;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--border-color);
     font-size: 0.75rem;
+    color: var(--text-primary);
 }
 
 .schedule-table td:first-child {
     text-align: center;
     font-weight: 600;
-    color: var(--primary-color);
+    color: var(--accent-green);
 }
 
 .schedule-table tr:hover {
-    background: var(--background-light);
+    background: var(--bg-tertiary);
 }
 
 .schedule-table tr:last-child td {
@@ -481,17 +526,17 @@ input[type="range"]::-moz-range-thumb {
 .schedule-table .diff-cell {
     color: var(--warning-color);
     font-weight: 600;
-    background: #fff8e1;
+    background: rgba(255, 167, 38, 0.1);
 }
 
 .schedule-table .diff-cell.positive {
     color: var(--success-color);
-    background: #e8f5e9;
+    background: rgba(0, 208, 156, 0.1);
 }
 
 .schedule-table .diff-cell.negative {
     color: var(--danger-color);
-    background: #ffebee;
+    background: rgba(255, 107, 107, 0.1);
 }
 
 /* Toggle Buttons */
@@ -503,9 +548,9 @@ input[type="range"]::-moz-range-thumb {
 
 .toggle-btn {
     padding: 6px 14px;
-    border: 2px solid var(--primary-color);
-    background: white;
-    color: var(--primary-color);
+    border: 1px solid var(--accent-green);
+    background: transparent;
+    color: var(--accent-green);
     border-radius: var(--border-radius-sm);
     cursor: pointer;
     font-weight: 600;
@@ -514,43 +559,40 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .toggle-btn.active {
-    background: var(--primary-color);
-    color: white;
+    background: var(--accent-green);
+    color: var(--bg-primary);
 }
 
 .toggle-btn:hover {
-    background: var(--primary-color);
-    color: white;
+    background: var(--accent-green);
+    color: var(--bg-primary);
 }
 
 /* Loan Amount Display */
 .loan-amount-display {
-    background: #e8f0fe;
+    background: var(--bg-tertiary);
     padding: 4px 8px;
-    border-radius: 5px;
+    border-radius: 6px;
     margin-top: 6px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border: 1px solid var(--border-color);
 }
 
 .loan-amount-display .label {
-    color: var(--text-secondary);
+    color: var(--text-muted);
     font-size: 0.7rem;
 }
 
 .loan-amount-display .value {
-    color: var(--primary-color);
+    color: var(--accent-green);
     font-weight: 700;
     font-size: 0.8rem;
 }
 
-.tab-b-active .loan-amount-display {
-    background: #fce4ec;
-}
-
 .tab-b-active .loan-amount-display .value {
-    color: var(--secondary-color);
+    color: var(--accent-pink);
 }
 
 /* Mortgage Config */
@@ -577,20 +619,21 @@ input[type="number"] {
 
 /* Investment Card */
 .investment-card {
-    background: white;
-    border-radius: 12px;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
     padding: 15px;
     box-shadow: var(--shadow);
     margin-top: 15px;
+    border: 1px solid var(--border-color);
 }
 
 .investment-card.lumpsum-card {
-    background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
-    border: 1px solid #90caf9;
+    background: linear-gradient(135deg, rgba(0, 208, 156, 0.1), rgba(255, 107, 157, 0.1));
+    border: 1px solid var(--accent-green);
 }
 
 .investment-card.lumpsum-card .investment-table thead th {
-    background: linear-gradient(135deg, #1976d2, #7b1fa2);
+    background: linear-gradient(135deg, var(--accent-green-dark), var(--accent-pink-dark));
 }
 
 .investment-card h3 {
@@ -608,30 +651,33 @@ input[type="number"] {
 
 .investment-input-row label {
     font-weight: 600;
-    color: var(--text-primary);
+    color: var(--text-secondary);
     font-size: 0.8rem;
 }
 
 .investment-input-row input {
     flex: 1;
     padding: 8px 12px;
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius-sm);
     font-size: 0.9rem;
     max-width: 150px;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
 }
 
 .investment-input-row input:focus {
     outline: none;
-    border-color: var(--success-color);
+    border-color: var(--accent-green);
 }
 
 .investment-input-row .unit {
-    background: #e8f5e9;
+    background: rgba(0, 208, 156, 0.2);
     padding: 8px 12px;
     border-radius: var(--border-radius-sm);
     font-weight: 600;
-    color: var(--success-color);
+    color: var(--accent-green);
+    border: 1px solid var(--accent-green);
 }
 
 /* Investment Table */
@@ -648,8 +694,8 @@ input[type="number"] {
 }
 
 .investment-table th {
-    background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
-    color: white;
+    background: var(--gradient-green);
+    color: var(--bg-primary);
     padding: 8px 6px;
     text-align: right;
     font-weight: 600;
@@ -665,18 +711,19 @@ input[type="number"] {
 .investment-table td {
     padding: 6px;
     text-align: right;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--border-color);
     font-size: 0.75rem;
+    color: var(--text-primary);
 }
 
 .investment-table td:first-child {
     text-align: center;
     font-weight: 600;
-    color: var(--success-color);
+    color: var(--accent-green);
 }
 
 .investment-table tr:hover {
-    background: #f1f8e9;
+    background: var(--bg-tertiary);
 }
 
 .investment-table .gain-cell {
@@ -685,6 +732,26 @@ input[type="number"] {
 }
 
 .investment-table .total-cell {
-    color: #2E7D32;
+    color: var(--accent-green);
     font-weight: 600;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
 }

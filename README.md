@@ -2,6 +2,12 @@
 
 A comprehensive mortgage comparison tool that runs entirely in your browser. Compare two mortgage scenarios side-by-side, visualize amortization schedules, and calculate investment potential from payment savings.
 
+## 🌐 Live Demo
+
+**[Try it now →](https://yourusername.github.io/mortgage-calculator/)**
+
+> Replace `yourusername` with your GitHub username after deployment.
+
 ## Quick Start
 
 1. **Open the calculator**: Double-click `index.html` or drag it into your browser
@@ -134,9 +140,21 @@ Works in all modern browsers:
 
 ```
 mortgage_calculator/
-├── index.html          # The application (open this)
-├── README.md           # This file
-└── Project_Context.md  # Development history
+├── .github/
+│   └── workflows/
+│       └── deploy.yml      # Auto-deploy to GitHub Pages
+├── css/
+│   └── styles.css          # All styling (dark theme)
+├── js/
+│   ├── app.js              # Main application entry point
+│   ├── calculator.js       # Mortgage calculation functions
+│   ├── chart.js            # Chart rendering logic
+│   ├── investment.js       # Investment calculator logic
+│   ├── storage.js          # LocalStorage persistence
+│   └── ui.js               # UI interaction handlers
+├── index.html              # Main HTML structure
+├── README.md               # This file
+└── Project_Context.md      # Development history & TO-DOs
 ```
 
 ---

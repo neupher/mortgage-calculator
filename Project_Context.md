@@ -140,25 +140,26 @@ Break the large `index.html` into a future-proofed setup with separate files:
 - `js/storage.js` - LocalStorage persistence
 - `js/ui.js` - UI interaction handlers
 
-### 2. UI Improvements
+### 2. UI Improvements ✅ COMPLETED
 - Remove dots/points from graph lines
 - Remove outlines from graph legend items
 - General UI polish for a sleeker appearance
 
-### 3. Lump Sum Table Year Rows Fix
+### 3. Lump Sum Table Year Rows Fix ✅ COMPLETED
 Ensure the bottom lump sum investment table shows the number of "year rows" based on whichever of Mortgage A or B has a longer term.
 
-### 4. Apply New Color Scheme
+### 4. Apply New Color Scheme ✅ COMPLETED
 Implement dark theme with green accents inspired by stock trading apps:
-- **Background**: Dark (#1a1a2e or similar dark navy/black)
-- **Primary Accent**: Green (#00d09c or #1db954 - Spotify-like green)
-- **Secondary**: Dark gray panels (#252836)
-- **Text**: White/light gray
+- **Background**: Dark (#0d1117 - GitHub dark style)
+- **Primary Accent**: Green (#00d09c - Spotify-like green)
+- **Secondary Accent**: Pink (#ff6b9d)
+- **Panels**: Dark gray (#161b22, #21262d)
+- **Text**: White/light gray (#e6edf3, #8b949e)
 - **Positive values**: Green
 - **Negative values**: Red (#ff6b6b)
-- **Charts**: Green line styling on dark background
+- **Charts**: Green/Pink line styling on dark background
 
-### 5. Update README with Deployed URL
+### 5. Update README with Deployed URL ✅ COMPLETED
 Add the GitHub Pages deployment link to the README so users can easily access the live tool.
 
 ---
