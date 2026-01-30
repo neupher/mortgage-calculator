@@ -64,6 +64,14 @@ h1 {
     margin-bottom: 30px;
     font-size: 2.5rem;
     text-shadow: 0 0 30px rgba(0, 208, 156, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    filter: drop-shadow(0 0 10px rgba(0, 208, 156, 0.5));
 }
 
 /* Calculator Layout */
@@ -441,7 +449,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .schedule-table th {
-    background: var(--bg-tertiary);
+    background: #21262d;
     color: var(--text-primary);
     padding: 8px 6px;
     text-align: right;
@@ -449,7 +457,7 @@ input[type="range"]::-moz-range-thumb {
     font-size: 0.75rem;
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 10;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -458,17 +466,17 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .schedule-table th.col-a {
-    background: rgba(0, 208, 156, 0.2);
+    background: #1a3d35;
     color: var(--accent-green);
 }
 
 .schedule-table th.col-b {
-    background: rgba(79, 195, 247, 0.2);
+    background: #1a3340;
     color: var(--accent-blue);
 }
 
 .schedule-table th.col-diff {
-    background: rgba(255, 167, 38, 0.2);
+    background: #3d3020;
     color: var(--warning-color);
     padding: 4px;
 }
@@ -755,4 +763,336 @@ input[type="number"] {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--text-muted);
+}
+
+/* ========================================
+   MOBILE RESPONSIVE STYLES
+   ======================================== */
+
+/* Tablet and below (900px) */
+@media (max-width: 900px) {
+    body {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    .calculator-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .input-panel {
+        order: -1;
+    }
+
+    .left-column-chart .chart-container {
+        height: 200px;
+    }
+}
+
+/* Mobile devices (600px) */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .logo-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* Stack summary cards vertically */
+    .summary-cards {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .summary-card {
+        padding: 10px;
+    }
+
+    .monthly-payment .amount {
+        font-size: 1.2rem;
+    }
+
+    /* Larger touch targets for tabs */
+    .mortgage-tab {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+
+    /* Larger touch targets for toggle buttons */
+    .toggle-btn {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+    }
+
+    /* Larger slider thumbs for touch */
+    input[type="range"]::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+    }
+
+    input[type="range"] {
+        height: 8px;
+    }
+
+    /* Larger input fields */
+    .input-row input[type="number"],
+    .down-payment-row input[type="number"],
+    .down-payment-row .percent-input input {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+
+    .input-row .unit,
+    .down-payment-row .percent-input .unit {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+    }
+
+    .date-row select {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+
+    /* Card titles */
+    .schedule-card h3,
+    .investment-card h3 {
+        font-size: 0.85rem;
+    }
+
+    /* Table adjustments */
+    .schedule-table-container,
+    .investment-table-container {
+        position: relative;
+    }
+
+    /* Add scroll shadow hint */
+    .schedule-table-container::after,
+    .investment-table-container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 20px;
+        background: linear-gradient(to left, var(--bg-secondary), transparent);
+        pointer-events: none;
+        opacity: 0.8;
+    }
+
+    .schedule-table,
+    .investment-table {
+        font-size: 0.65rem;
+    }
+
+    .schedule-table th,
+    .investment-table th {
+        padding: 6px 4px;
+        font-size: 0.6rem;
+    }
+
+    .schedule-table td,
+    .investment-table td {
+        padding: 5px 4px;
+        font-size: 0.65rem;
+    }
+
+    .diff-select {
+        font-size: 0.6rem;
+        padding: 3px 4px;
+    }
+
+    /* Investment input row - stack on mobile */
+    .investment-input-row {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .investment-input-row label {
+        font-size: 0.75rem;
+    }
+
+    .investment-input-row input {
+        max-width: 120px;
+        padding: 8px 10px;
+    }
+
+    #savingsLabel {
+        width: 100%;
+        font-size: 0.7rem;
+    }
+
+    /* Chart adjustments */
+    .chart-container,
+    .left-column-chart .chart-container {
+        height: 180px;
+    }
+
+    /* Schedule card padding */
+    .schedule-card,
+    .investment-card {
+        padding: 12px;
+    }
+
+    /* Breakdown items - smaller on mobile */
+    .breakdown-item {
+        padding: 5px;
+    }
+
+    .breakdown-item .label {
+        font-size: 0.55rem;
+    }
+
+    .breakdown-item .value {
+        font-size: 0.7rem;
+    }
+}
+
+/* Extra small phones (400px) */
+@media (max-width: 400px) {
+    body {
+        padding: 8px;
+    }
+
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    .input-panel,
+    .summary-card,
+    .schedule-card,
+    .investment-card {
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .mortgage-tab {
+        padding: 8px 6px;
+        font-size: 0.8rem;
+    }
+
+    .monthly-payment {
+        padding: 8px;
+    }
+
+    .monthly-payment .amount {
+        font-size: 1.1rem;
+    }
+
+    /* Payment breakdown - single column on very small screens */
+    .payment-breakdown {
+        grid-template-columns: 1fr 1fr;
+        gap: 4px;
+    }
+
+    /* Even smaller table text */
+    .schedule-table,
+    .investment-table {
+        font-size: 0.6rem;
+    }
+
+    .schedule-table th,
+    .investment-table th {
+        padding: 5px 3px;
+        font-size: 0.55rem;
+    }
+
+    .schedule-table td,
+    .investment-table td {
+        padding: 4px 3px;
+        font-size: 0.6rem;
+    }
+
+    /* Hide some columns on very small screens for readability */
+    .schedule-table th:nth-child(4),
+    .schedule-table td:nth-child(4),
+    .schedule-table th:nth-child(8),
+    .schedule-table td:nth-child(8) {
+        display: none;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger touch targets */
+    .mortgage-tab,
+    .toggle-btn {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .date-row select {
+        min-height: 44px;
+    }
+
+    /* Remove hover effects on touch devices */
+    .toggle-btn:hover {
+        background: transparent;
+        color: var(--accent-green);
+    }
+
+    .toggle-btn.active:hover {
+        background: var(--accent-green);
+        color: var(--bg-primary);
+    }
+
+    .schedule-table tr:hover,
+    .investment-table tr:hover {
+        background: transparent;
+    }
+}
+
+/* Landscape phone orientation */
+@media (max-width: 900px) and (orientation: landscape) {
+    .chart-container,
+    .left-column-chart .chart-container {
+        height: 150px;
+    }
+
+    .schedule-table-container {
+        max-height: 250px;
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        background: white;
+        color: black;
+        padding: 0;
+    }
+
+    .input-panel {
+        display: none;
+    }
+
+    .summary-card,
+    .schedule-card,
+    .investment-card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+        background: white;
+    }
+
+    .schedule-table-container {
+        max-height: none;
+        overflow: visible;
+    }
 }
