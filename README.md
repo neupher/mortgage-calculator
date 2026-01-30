@@ -6,7 +6,6 @@ A comprehensive mortgage comparison tool that runs entirely in your browser. Com
 
 **[Try it now →](https://neupher.github.io/mortgage-calculator/)**
 
-> Replace `yourusername` with your GitHub username after deployment.
 
 ## Quick Start
 
