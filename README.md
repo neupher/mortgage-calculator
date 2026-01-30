@@ -2,9 +2,9 @@
 
 A comprehensive mortgage comparison tool that runs entirely in your browser. Compare two mortgage scenarios side-by-side, visualize amortization schedules, and calculate investment potential from payment savings.
 
-## 🌐 Live Demo
+## 🌐 Open in your browser:
 
-**[Try it now →](https://yourusername.github.io/mortgage-calculator/)**
+**[Try it now →](https://neupher.github.io/mortgage-calculator/)**
 
 > Replace `yourusername` with your GitHub username after deployment.
 
