@@ -47,7 +47,7 @@ Create a mortgage calculator similar to calculator.net/mortgage-calculator.html 
   - Interest Diff
   - Principal Diff
   - Principal Cumulative Diff
-- **Cumulative Payment Difference** column (Pmt Diff Cum.)
+- **Cumulative Payment Difference** column (Payment Diff)
 - Color-coded cells (green = favorable, red = unfavorable)
 - Light background highlighting on difference columns
 
@@ -127,40 +127,109 @@ Each month:
 2. Apply monthly interest: balance × (1 + annual_rate/12)
 ```
 
-## Active TO-DO List
+## Development Session Log (January 2026)
 
-### 1. Modularize Codebase Structure ✅ COMPLETED
-Break the large `index.html` into a future-proofed setup with separate files:
-- `index.html` - Main HTML structure
-- `css/styles.css` - All styling
-- `js/app.js` - Main application logic
+### Completed TO-DO List
+
+#### 1. Modularize Codebase Structure ✅ COMPLETED
+Broke the original 1,678-line `index.html` into a clean, maintainable structure:
+- `index.html` - Main HTML structure (slim, ~200 lines)
+- `css/styles.css` - All styling with CSS custom properties
+- `js/app.js` - Main application entry point
 - `js/calculator.js` - Mortgage calculation functions
-- `js/chart.js` - Chart rendering logic
+- `js/chart.js` - Chart rendering logic with Chart.js
 - `js/investment.js` - Investment calculator logic
 - `js/storage.js` - LocalStorage persistence
-- `js/ui.js` - UI interaction handlers
+- `js/ui.js` - UI interaction handlers and slider logic
 
-### 2. UI Improvements ✅ COMPLETED
-- Remove dots/points from graph lines
-- Remove outlines from graph legend items
+#### 2. UI Improvements ✅ COMPLETED
+- Removed dots/points from graph lines (`pointRadius: 0`)
+- Removed outlines from graph legend items
+- Styled legend with dark background and padding
 - General UI polish for a sleeker appearance
 
-### 3. Lump Sum Table Year Rows Fix ✅ COMPLETED
-Ensure the bottom lump sum investment table shows the number of "year rows" based on whichever of Mortgage A or B has a longer term.
+#### 3. Lump Sum Table Year Rows Fix ✅ COMPLETED
+Verified implementation uses `Math.max(termA, termB)` to show year rows based on the longer mortgage term.
 
-### 4. Apply New Color Scheme ✅ COMPLETED
-Implement dark theme with green accents inspired by stock trading apps:
+#### 4. Apply New Color Scheme ✅ COMPLETED
+Implemented dark theme with green accents (trading app style):
 - **Background**: Dark (#0d1117 - GitHub dark style)
 - **Primary Accent**: Green (#00d09c - Spotify-like green)
-- **Secondary Accent**: Pink (#ff6b9d)
+- **Secondary Accent**: Blue (#4fc3f7 - for Mortgage B)
 - **Panels**: Dark gray (#161b22, #21262d)
 - **Text**: White/light gray (#e6edf3, #8b949e)
 - **Positive values**: Green
 - **Negative values**: Red (#ff6b6b)
-- **Charts**: Green/Pink line styling on dark background
+- **Warning values**: Orange (#ffa726)
 
-### 5. Update README with Deployed URL ✅ COMPLETED
-Add the GitHub Pages deployment link to the README so users can easily access the live tool.
+#### 5. Update README with Deployed URL ✅ COMPLETED
+Added GitHub Pages deployment link: https://tapaniq.github.io/mortgage-calculator/
+
+---
+
+### Additional Enhancements Completed
+
+#### 6. Mortgage B Color Scheme Change ✅
+Changed Mortgage B from pink/red to blue (#4fc3f7) throughout the UI:
+- Tab active state
+- Summary card accent
+- Chart line color
+- Table header background
+- All borders and highlights
+
+#### 7. Table Header Styling Fix ✅
+Fixed lump sum table header to match the amortization table:
+- Removed gradient styling
+- Applied solid green background (#21262d with accent colors)
+- Consistent styling across all tables
+
+#### 8. README Calculation Formulas ✅
+Added comprehensive formulas section to README including:
+- Monthly payment formula with example
+- Interest calculation
+- Principal calculation
+- Balance reduction
+- Total interest calculation
+- Interest-to-principal ratio
+- Investment compound growth formulas
+
+#### 9. Mobile Responsive Design ✅
+Added comprehensive responsive CSS for mobile devices:
+- **900px breakpoint**: Two-column to single-column layout
+- **600px breakpoint**: Smaller fonts, compact spacing
+- **400px breakpoint**: Ultra-compact mobile view
+- Touch device optimizations (`@media (hover: none) and (pointer: coarse)`)
+- Larger touch targets (44px minimum)
+- Horizontal scroll for wide tables
+- Adjusted chart aspect ratios
+
+#### 10. SVG House Icon ✅
+Replaced emoji house logo with custom inline SVG:
+- Matches theme green color (#00d09c)
+- Crisp rendering at all sizes
+- 40x40px dimensions
+- Simple house silhouette design
+
+#### 11. Sticky Header Z-Index Fix ✅
+Fixed table header scroll overlap issue:
+- Increased `z-index` from 1 to 10
+- Changed rgba() backgrounds to solid colors for header cells:
+  - Default: #21262d
+  - Mortgage A columns: #1a3d35 (dark green tint)
+  - Mortgage B columns: #1a3340 (dark blue tint)
+  - Difference columns: #3d3020 (dark amber tint)
+
+#### 12. GitHub Actions Deployment ✅
+Created `.github/workflows/deploy.yml` for automatic deployment:
+- Triggers on push to main branch
+- Deploys to GitHub Pages
+- Uses latest GitHub Actions (v4/v5)
+
+---
+
+## Active TO-DO List
+
+*No active tasks - all items completed!*
 
 ---
 

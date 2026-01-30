@@ -64,7 +64,7 @@ View year-by-year (or month-by-month) breakdown:
 
 **Comparison Columns:**
 - **Difference Dropdown** - Choose what to compare: Balance, Interest, Principal, or Cumulative Principal
-- **Pmt Diff Cum.** - Running total of payment differences between A and B
+- **Payment Diff** - Running total of payment differences between A and B
 
 **Color Coding:**
 - 🟢 Green = Favorable (A is better)

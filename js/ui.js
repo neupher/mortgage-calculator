@@ -252,7 +252,7 @@ function generateSchedule(configA, configB, calculateAllCallback) {
                 <option value="principalCumulative" ${currentDiffType === 'principalCumulative' ? 'selected' : ''}>Prin. Cum. Diff</option>
             </select>
         </th>
-        <th class="col-diff">Pmt Diff Cum.</th>
+        <th class="col-diff">Payment Diff</th>
     `;
 
     // Re-attach event listener after rebuilding header
