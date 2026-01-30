@@ -84,9 +84,21 @@ Create a mortgage calculator similar to calculator.net/mortgage-calculator.html 
 ### File Structure
 ```
 mortgage_calculator/
-├── index.html          # Complete application (HTML + CSS + JS)
-├── Project_Context.md  # This file
-└── README.md           # Usage instructions
+├── .github/
+│   └── workflows/
+│       └── deploy.yml      # GitHub Actions auto-deploy to Pages
+├── css/
+│   └── styles.css          # All styling
+├── js/
+│   ├── app.js              # Main application entry point
+│   ├── calculator.js       # Mortgage calculation functions
+│   ├── chart.js            # Chart rendering logic
+│   ├── investment.js       # Investment calculator logic
+│   ├── storage.js          # LocalStorage persistence
+│   └── ui.js               # UI interaction handlers
+├── index.html              # Main HTML structure
+├── Project_Context.md      # This file
+└── README.md               # Usage instructions
 ```
 
 ## Key Calculations
@@ -115,10 +127,45 @@ Each month:
 2. Apply monthly interest: balance × (1 + annual_rate/12)
 ```
 
+## Active TO-DO List
+
+### 1. Modularize Codebase Structure ✅ COMPLETED
+Break the large `index.html` into a future-proofed setup with separate files:
+- `index.html` - Main HTML structure
+- `css/styles.css` - All styling
+- `js/app.js` - Main application logic
+- `js/calculator.js` - Mortgage calculation functions
+- `js/chart.js` - Chart rendering logic
+- `js/investment.js` - Investment calculator logic
+- `js/storage.js` - LocalStorage persistence
+- `js/ui.js` - UI interaction handlers
+
+### 2. UI Improvements
+- Remove dots/points from graph lines
+- Remove outlines from graph legend items
+- General UI polish for a sleeker appearance
+
+### 3. Lump Sum Table Year Rows Fix
+Ensure the bottom lump sum investment table shows the number of "year rows" based on whichever of Mortgage A or B has a longer term.
+
+### 4. Apply New Color Scheme
+Implement dark theme with green accents inspired by stock trading apps:
+- **Background**: Dark (#1a1a2e or similar dark navy/black)
+- **Primary Accent**: Green (#00d09c or #1db954 - Spotify-like green)
+- **Secondary**: Dark gray panels (#252836)
+- **Text**: White/light gray
+- **Positive values**: Green
+- **Negative values**: Red (#ff6b6b)
+- **Charts**: Green line styling on dark background
+
+### 5. Update README with Deployed URL
+Add the GitHub Pages deployment link to the README so users can easily access the live tool.
+
+---
+
 ## Future Enhancement Ideas
 - Export amortization schedule to CSV/Excel
 - Print-friendly view
 - Additional comparison metrics (break-even point, etc.)
 - Extra payment scenarios
 - Refinancing calculator
-- Dark mode toggle
