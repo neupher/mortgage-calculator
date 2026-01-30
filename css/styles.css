@@ -16,8 +16,9 @@
     --accent-green: #00d09c;
     --accent-green-light: #3dffc0;
     --accent-green-dark: #00a67d;
-    --accent-pink: #ff6b9d;
-    --accent-pink-dark: #d44a7a;
+    --accent-blue: #4fc3f7;
+    --accent-blue-dark: #29b6f6;
+    --accent-blue-light: #81d4fa;
 
     /* Status Colors */
     --success-color: #00d09c;
@@ -39,7 +40,7 @@
 
     /* Gradients */
     --gradient-green: linear-gradient(135deg, #00d09c 0%, #00a67d 100%);
-    --gradient-pink: linear-gradient(135deg, #ff6b9d 0%, #d44a7a 100%);
+    --gradient-blue: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
     --gradient-dark: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
 }
 
@@ -120,14 +121,14 @@ h1 {
 }
 
 .mortgage-tab.tab-b.active {
-    background: var(--accent-pink);
-    border-color: var(--accent-pink);
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
     color: var(--bg-primary);
 }
 
 .mortgage-tab.tab-b {
-    border-color: var(--accent-pink);
-    color: var(--accent-pink);
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
 }
 
 /* Input Groups */
@@ -308,7 +309,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .summary-card.card-b {
-    border-top: 3px solid var(--accent-pink);
+    border-top: 3px solid var(--accent-blue);
 }
 
 .summary-card .card-label {
@@ -324,7 +325,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .summary-card.card-b .card-label {
-    color: var(--accent-pink);
+    color: var(--accent-blue);
 }
 
 /* Monthly Payment Display */
@@ -337,7 +338,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .card-b .monthly-payment {
-    background: var(--gradient-pink);
+    background: var(--gradient-blue);
 }
 
 .monthly-payment .label {
@@ -462,8 +463,8 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .schedule-table th.col-b {
-    background: rgba(255, 107, 157, 0.2);
-    color: var(--accent-pink);
+    background: rgba(79, 195, 247, 0.2);
+    color: var(--accent-blue);
 }
 
 .schedule-table th.col-diff {
@@ -592,7 +593,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .tab-b-active .loan-amount-display .value {
-    color: var(--accent-pink);
+    color: var(--accent-blue);
 }
 
 /* Mortgage Config */
@@ -628,12 +629,12 @@ input[type="number"] {
 }
 
 .investment-card.lumpsum-card {
-    background: linear-gradient(135deg, rgba(0, 208, 156, 0.1), rgba(255, 107, 157, 0.1));
-    border: 1px solid var(--accent-green);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
 }
 
 .investment-card.lumpsum-card .investment-table thead th {
-    background: linear-gradient(135deg, var(--accent-green-dark), var(--accent-pink-dark));
+    background: var(--gradient-green);
 }
 
 .investment-card h3 {

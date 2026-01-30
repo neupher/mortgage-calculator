@@ -121,6 +121,89 @@ Use the Investment Calculator to see if you're better off:
 - A has $677/month lower payment
 - $677/month invested at 8% for 30 years = ~$1,000,000+
 
+## Calculation Formulas
+
+### Monthly Payment
+
+The monthly payment is calculated using the standard amortization formula:
+
+```
+M = P × [r(1 + r)^n] / [(1 + r)^n - 1]
+```
+
+Where:
+- **M** = Monthly payment
+- **P** = Principal (loan amount = home price - down payment)
+- **r** = Monthly interest rate (annual rate ÷ 12 ÷ 100)
+- **n** = Total number of payments (loan term in years × 12)
+
+**Example:** $320,000 loan at 6.5% for 30 years
+```
+r = 6.5 / 12 / 100 = 0.005417
+n = 30 × 12 = 360
+M = 320,000 × [0.005417 × (1.005417)^360] / [(1.005417)^360 - 1]
+M = $2,022.09/month
+```
+
+### Monthly Interest Payment
+
+Each month, interest is calculated on the remaining balance:
+
+```
+Interest = Balance × Monthly Rate
+```
+
+### Monthly Principal Payment
+
+The principal portion is what remains after interest:
+
+```
+Principal = Monthly Payment - Interest
+```
+
+### Remaining Balance
+
+After each payment, the balance is reduced by the principal paid:
+
+```
+New Balance = Previous Balance - Principal Payment
+```
+
+### Total Interest Paid
+
+Sum of all interest payments over the loan term:
+
+```
+Total Interest = (Monthly Payment × Number of Payments) - Principal
+```
+
+### Interest-to-Principal Ratio
+
+Shows how much interest you pay relative to the loan amount:
+
+```
+Ratio = (Total Interest / Principal) × 100%
+```
+
+### Investment Growth (Compound Interest)
+
+For the investment calculator, monthly compounding is used:
+
+```
+Each month:
+  1. Add monthly contribution: Balance += Contribution
+  2. Apply interest: Balance × (1 + Annual Rate / 12)
+```
+
+**Lump Sum Growth:**
+```
+Future Value = Present Value × (1 + r)^n
+```
+
+Where:
+- **r** = Monthly rate (annual rate ÷ 12)
+- **n** = Number of months
+
 ## Technical Notes
 
 - **No installation required** - Just open the HTML file

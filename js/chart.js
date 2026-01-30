@@ -76,8 +76,8 @@ function updateChart(configA, configB) {
                 {
                     label: 'Mortgage B Balance',
                     data: chartDataB,
-                    borderColor: '#ff6b9d',
-                    backgroundColor: 'rgba(255, 107, 157, 0.1)',
+                    borderColor: '#4fc3f7',
+                    backgroundColor: 'rgba(79, 195, 247, 0.1)',
                     borderWidth: 3,
                     fill: true,
                     tension: 0.4,
